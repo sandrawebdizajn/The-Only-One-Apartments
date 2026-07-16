@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #14110c; color: #ece5d6; font-family: 'Montserrat', system-ui, sans-serif; }
+  a { color: #d8b877; text-decoration: none; transition: color .2s ease; }
+  a:hover { color: #f0d9a6; }
+  ::selection { background: #d8b877; color: #14110c; }
+  @media (min-width: 1040px) {
+    [data-nav-links] { display: flex !important; }
+    [data-nav-toggle] { display: none !important; }
+  }
+  @media (min-width: 860px) {
+    [data-tiles] { grid-template-columns: repeat(3, 1fr) !important; }
+  }
+</style>
+</helmet>
+<div style="max-width: 100%; overflow-x: hidden; background: #14110c; min-height: 100vh;">
+
+  <!-- NAV -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(20,17,12,.82); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(216,184,119,.16);">
+    <nav style="max-width: 1200px; margin: 0 auto; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px;">
+      <a href="index.html" style="display: flex; align-items: center; gap: 12px; line-height: 1; color: #ece5d6;">
+        <img src="assets/logo-onlyone.png" alt="The Only One Apartments" style="display: block; height: 48px; width: auto;">
+        <span style="display: flex; flex-direction: column;">
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: .5px;">The Only One</span>
+          <span style="font-size: 10px; letter-spacing: 4px; color: #d8b877; text-transform: uppercase; margin-top: 3px;">Apartments · Niš</span>
+        </span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 26px;">
+        <div style="display: none; gap: 26px; align-items: center;" data-nav-links>
+          <sc-for list="{{ nav }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" style="font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: #cbc2b0; padding-bottom: 6px; transition: color .2s ease, box-shadow .25s ease;" style-hover="color: #f0d9a6; box-shadow: inset 0 -2px 0 #d8b877;">{{ item.label }}</a>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 2px; border: 1px solid rgba(216,184,119,.28); border-radius: 999px; padding: 3px;">
+          <button onClick="{{ setSr }}" style="{{ srBtnStyle }}">SR</button>
+          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+        </div>
+        <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 8px; background: #d8b877; color: #14110c; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .5px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 10px 22px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.navBook }}</a>
+        <button onClick="{{ toggleMenu }}" aria-label="Meni" data-nav-toggle style="display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 0 10px; background: transparent; border: 1px solid rgba(216,184,119,.35); border-radius: 8px; cursor: pointer;">
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+        </button>
+      </div>
+    </nav>
+    <sc-if value="{{ menuOpen }}">
+      <div style="border-top: 1px solid rgba(216,184,119,.16); background: rgba(20,17,12,.97); padding: 14px 22px 22px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <sc-for list="{{ nav }}" as="item" hint-placeholder-count="4">
+            <a href="{{ item.href }}" onClick="{{ closeMenu }}" style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: #cbc2b0; padding: 13px 4px; border-bottom: 1px solid rgba(216,184,119,.08);">{{ item.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section data-reveal style="max-width: 1200px; margin: 0 auto; padding: 72px 22px 20px;">
+    <a href="index.html" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #8f8676; transition: color .2s ease;" style-hover="color: #d8b877;">← {{ t.back }}</a>
+    <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin: 22px 0 14px;">{{ t.kicker }}</div>
+    <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(40px,7vw,72px); line-height: 1; margin: 0 0 18px; color: #f6efe0;">{{ t.title }}</h1>
+    <p style="font-size: 17px; line-height: 1.6; color: #c2b9a8; max-width: 560px; margin: 0; text-wrap: pretty;">{{ t.intro }}</p>
+  </section>
+
+  <!-- SECTIONS -->
+  <section style="max-width: 1200px; margin: 0 auto; padding: 40px 22px 100px; display: flex; flex-direction: column; gap: 72px;">
+    <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+      <div data-reveal id="{{ sec.id }}" style="scroll-margin-top: 96px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 26px; padding-bottom: 16px; border-bottom: 1px solid rgba(216,184,119,.16);">
+          <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(26px,4vw,38px); margin: 0; color: #f2ead9;">{{ sec.name }}</h2>
+          <span style="font-size: 13px; letter-spacing: 1px; color: #8f8676;">{{ sec.note }}</span>
+        </div>
+        <div data-slidewrap style="position: relative;">
+          <div data-slider style="display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: thin; scrollbar-color: rgba(216,184,119,.4) transparent;">
+            <sc-for list="{{ sec.tiles }}" as="tile" hint-placeholder-count="7">
+              <div onClick="{{ tile.open }}" style="{{ tile.wrapStyle }}" style-hover="border-color: rgba(216,184,119,.5);">
+                {{ tile.el }}
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ slidePrev }}" aria-label="Prethodna" style="{{ arrowPrevStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">‹</button>
+          <button onClick="{{ slideNext }}" aria-label="Sledeća" style="{{ arrowNextStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">›</button>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+
+  <!-- CTA -->
+  <section data-reveal style="background: radial-gradient(900px 460px at 50% 0%, rgba(216,184,119,.09), transparent 60%), #100d09; border-top: 1px solid rgba(216,184,119,.12); padding: 72px 22px; text-align: center;">
+    <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(28px,4.5vw,44px); margin: 0 0 14px; color: #f6efe0;">{{ t.ctaTitle }}</h2>
+    <p style="font-size: 16px; color: #aaa192; margin: 0 0 30px;">{{ t.ctaSub }}</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;">
+      <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 9px; background: #d8b877; color: #14110c; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 600; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 12px 28px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.heroCall }}</a>
+      <a href="https://www.booking.com/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(216,184,119,.4); color: #ece5d6; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;" style-hover="transform: translateY(-2px); border-color: #d8b877; background: rgba(216,184,119,.12); color: #f6efe0;">{{ t.heroBooking }}</a>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <sc-if value="{{ lightbox }}">
+    <div onClick="{{ closeLightbox }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(10,8,5,.93); display: flex; align-items: center; justify-content: center; padding: 30px;">
+      {{ lightboxEl }}
+      <button onClick="{{ closeLightbox }}" aria-label="Zatvori" style="position: fixed; top: 20px; right: 24px; width: 46px; height: 46px; border-radius: 999px; border: 1px solid rgba(216,184,119,.4); background: rgba(20,17,12,.8); color: #ece5d6; font-size: 24px; cursor: pointer; line-height: 1;">×</button>
+    </div>
+  </sc-if>
+
+  <!-- FOOTER -->
+  <footer style="background: #0d0a07; border-top: 1px solid rgba(216,184,119,.14); padding: 48px 22px; text-align: center;">
+    <img src="assets/logo-onlyone.png" alt="The Only One Apartments" style="display: block; height: 60px; width: auto; margin: 0 auto 14px;">
+    <div style="font-size: 14px; color: #8f8676; margin-bottom: 8px;">Sedmi Juli 7, 18000 Niš · <a href="tel:+381637836968">+381 63 783 6968</a></div>
+    <div style="font-size: 12px; color: #6f675a;">© 2026 The Only One Apartments · {{ t.footRights }}</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: &quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { lang: 'sr', lightbox: null, menuOpen: false };
+
+  componentDidMount() { this.revealInit(); }
+  componentWillUnmount() { if (this._revealIO) this._revealIO.disconnect(); }
+  revealInit() {
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    els.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity .7s ease, transform .7s ease';
+    });
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      return;
+    }
+    this._revealIO = new IntersectionObserver((ents) => {
+      ents.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'none';
+          this._revealIO.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => this._revealIO.observe(el));
+  }
+
+  openLightbox(src, alt) { this.setState({ lightbox: { src, alt } }); }
+  closeLightbox() { this.setState({ lightbox: null }); }
+  slideBy(e, dir) {
+    const wrap = e.currentTarget.closest('[data-slidewrap]');
+    const s = wrap && wrap.querySelector('[data-slider]');
+    if (s) s.scrollBy({ left: dir * Math.round(s.clientWidth * 0.8), behavior: 'smooth' });
+  }
+
+  img(src, alt) {
+    return React.createElement('img', { src, alt, style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } });
+  }
+
+  placeholder(label) {
+    return React.createElement('div', {
+      style: { width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: 'repeating-linear-gradient(48deg,#221e17 0 14px,#1b1711 14px 28px)' },
+    }, React.createElement('span', {
+      style: { fontFamily: "'Montserrat', sans-serif", fontSize: '11px', letterSpacing: '2px', color: 'rgba(236,229,214,.4)', textTransform: 'uppercase' },
+    }, '[ ' + label + ' ]'));
+  }
+
+  dict() {
+    const sr = {
+      navBook: 'Rezerviši',
+      nav: [
+        { label: 'Početna', href: 'index.html' },
+        { label: 'Apartmani', href: 'index.html#apartmani' },
+        { label: 'Galerija', href: 'Galerija.dc.html' },
+        { label: 'Kontakt', href: 'index.html#lokacija' },
+      ],
+      back: 'Nazad na početnu',
+      kicker: 'Galerija',
+      title: 'Naši apartmani u slici',
+      intro: 'Pogledajte fotografije po tipu apartmana, kao i zajedničke prostore, recepciju i privatni parking.',
+      addPh: 'dodaj fotografiju',
+      ctaTitle: 'Sviđa vam se ono što vidite?',
+      ctaSub: 'Rezervišite svoj apartman u centru Niša već danas.',
+      heroCall: 'Pozovi i rezerviši',
+      heroBooking: 'Rezerviši na Booking.com',
+      footRights: 'Sva prava zadržana.',
+      secNames: {
+        deluxe: ['Deluxe apartmani', 'Prostrano i luksuzno'],
+        p2: ['Apartmani za 2 osobe', 'Za parove i poslovne goste'],
+        p3: ['Apartmani za 3 osobe', 'Za manje društvo'],
+        p4: ['Apartmani za 4 osobe', 'Za porodice i grupe'],
+        stan: ['Stan na dan', 'Fleksibilan boravak'],
+        dnevni: ['Dnevni odmor', 'Predah tokom dana'],
+        zajed: ['Zajednički prostori', 'Recepcija i parking'],
+      },
+    };
+    const en = {
+      navBook: 'Book now',
+      nav: [
+        { label: 'Home', href: 'index.html' },
+        { label: 'Apartments', href: 'index.html#apartmani' },
+        { label: 'Gallery', href: 'Galerija.dc.html' },
+        { label: 'Contact', href: 'index.html#lokacija' },
+      ],
+      back: 'Back to home',
+      kicker: 'Gallery',
+      title: 'Our apartments in pictures',
+      intro: 'Browse photos by apartment type, plus the shared spaces, reception and private parking.',
+      addPh: 'add a photo',
+      ctaTitle: 'Like what you see?',
+      ctaSub: 'Book your apartment in the center of Niš today.',
+      heroCall: 'Call to book',
+      heroBooking: 'Book on Booking.com',
+      footRights: 'All rights reserved.',
+      secNames: {
+        deluxe: ['Deluxe apartments', 'Spacious and luxurious'],
+        p2: ['Apartments for 2', 'For couples and business guests'],
+        p3: ['Apartments for 3', 'For a small group'],
+        p4: ['Apartments for 4', 'For families and groups'],
+        stan: ['Daily rental', 'Flexible stay'],
+        dnevni: ['Day use', 'A daytime break'],
+        zajed: ['Shared spaces', 'Reception and parking'],
+      },
+    };
+    return this.state.lang === 'en' ? en : sr;
+  }
+
+  buildSections(t) {
+    const defs = [
+      { key: 'deluxe', imgs: ['images/apartmaniza2osobe-6-2048x1296.jpg', 'images/644290410.jpg'], ph: 2 },
+      { key: 'p2', imgs: ['images/644290006.jpg'], ph: 2 },
+      { key: 'p3', imgs: ['images/644290413.jpg'], ph: 2 },
+      { key: 'p4', imgs: ['images/644290418.jpg'], ph: 2 },
+      { key: 'stan', imgs: ['images/332186676.jpg'], ph: 2 },
+      { key: 'dnevni', imgs: ['images/dnevni-odmor-nis-1.jpg'], ph: 2 },
+      { key: 'zajed', imgs: ['images/recepcija-glavn.jpg', 'images/332489486.jpg'], ph: 0 },
+    ];
+    const TOTAL = 7;
+    const base = 'flex: 0 0 320px; max-width: 82vw; aspect-ratio: 4/3; scroll-snap-align: start; border: 1px solid rgba(216,184,119,.12); border-radius: 5px; overflow: hidden;';
+    return defs.map((d) => {
+      const meta = t.secNames[d.key];
+      const tiles = d.imgs.map((src) => ({
+        el: this.img(src, meta[0]),
+        open: () => this.openLightbox(src, meta[0]),
+        wrapStyle: base + ' cursor: zoom-in;',
+      }));
+      for (let i = d.imgs.length; i < TOTAL; i++) {
+        tiles.push({ el: this.placeholder(t.addPh), open: null, wrapStyle: base });
+      }
+      return { id: d.key, name: meta[0], note: meta[1], tiles };
+    });
+  }
+
+  renderVals() {
+    const t = this.dict();
+    const btnBase = 'border: none; background: transparent; cursor: pointer; font-family: Jost, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; padding: 6px 12px; border-radius: 999px;';
+    const active = btnBase + ' background: #d8b877; color: #14110c;';
+    const inactive = btnBase + ' background: transparent; color: #9a9182;';
+    const arrowBase = 'position: absolute; top: calc(50% - 6px); transform: translateY(-50%); width: 46px; height: 46px; border-radius: 999px; border: 1px solid rgba(216,184,119,.4); background: rgba(20,17,12,.85); color: #d8b877; font-size: 26px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; padding: 0 0 4px;';
+    const lb = this.state.lightbox;
+    const lightboxEl = lb ? React.createElement('img', { src: lb.src, alt: lb.alt, style: { maxWidth: '92vw', maxHeight: '88vh', objectFit: 'contain', borderRadius: '6px', boxShadow: '0 24px 70px rgba(0,0,0,.65)' } }) : null;
+    return {
+      t,
+      nav: t.nav,
+      sections: this.buildSections(t),
+      lightbox: this.state.lightbox,
+      lightboxEl,
+      closeLightbox: () => this.closeLightbox(),
+      slidePrev: (e) => this.slideBy(e, -1),
+      slideNext: (e) => this.slideBy(e, 1),
+      arrowPrevStyle: arrowBase + ' left: 6px;',
+      arrowNextStyle: arrowBase + ' right: 6px;',
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      setSr: () => this.setState({ lang: 'sr' }),
+      setEn: () => this.setState({ lang: 'en' }),
+      srBtnStyle: this.state.lang === 'sr' ? active : inactive,
+      enBtnStyle: this.state.lang === 'en' ? active : inactive,
+    };
+  }
+}
+</script>
+</body>
+</html>

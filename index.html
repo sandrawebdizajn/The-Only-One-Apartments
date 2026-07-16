@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #14110c; color: #ece5d6; font-family: 'Montserrat', system-ui, sans-serif; }
+  a { color: #d8b877; text-decoration: none; transition: color .2s ease; }
+  a:hover { color: #f0d9a6; }
+  ::selection { background: #d8b877; color: #14110c; }
+  @keyframes floatUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes gFade { from { opacity: 0; } to { opacity: 1; } }
+  @media (min-width: 1040px) {
+    [data-nav-links] { display: flex !important; }
+    [data-nav-toggle] { display: none !important; }
+  }
+  @media (min-width: 860px) {
+    [data-two-col] { grid-template-columns: 1fr 1fr !important; }
+    [data-amen] { grid-template-columns: repeat(3, 1fr) !important; }
+  }
+  @media (max-width: 640px) {
+    [data-gallery] { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+</style>
+</helmet>
+<div style="max-width: 100%; overflow-x: hidden; background: #14110c;">
+
+  <!-- NAV -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(20,17,12,.82); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(216,184,119,.16);">
+    <nav style="max-width: 1200px; margin: 0 auto; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px;">
+      <a href="#top" style="display: flex; align-items: center; gap: 12px; line-height: 1; color: #ece5d6;">
+        <img src="assets/logo-onlyone.png" alt="The Only One Apartments" style="display: block; height: 48px; width: auto;">
+        <span style="display: flex; flex-direction: column;">
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: .5px;">The Only One</span>
+          <span style="font-size: 10px; letter-spacing: 4px; color: #d8b877; text-transform: uppercase; margin-top: 3px;">Apartments · Niš</span>
+        </span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 26px;">
+        <div style="display: none; gap: 26px; align-items: center;" data-nav-links="">
+          <sc-for list="{{ nav }}" as="item" hint-placeholder-count="6">
+            <a href="{{ item.href }}" style="font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: #cbc2b0; padding-bottom: 6px; transition: color .2s ease, box-shadow .25s ease;" style-hover="color: #f0d9a6; box-shadow: inset 0 -2px 0 #d8b877;">{{ item.label }}</a>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 2px; border: 1px solid rgba(216,184,119,.28); border-radius: 999px; padding: 3px;">
+          <button onClick="{{ setSr }}" style="{{ srBtnStyle }}">SR</button>
+          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+        </div>
+        <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 8px; background: #d8b877; color: #14110c; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .5px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 10px 22px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.navBook }}</a>
+        <button onClick="{{ toggleMenu }}" aria-label="Meni" data-nav-toggle="" style="display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 0 10px; background: transparent; border: 1px solid rgba(216,184,119,.35); border-radius: 8px; cursor: pointer;">
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+          <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
+        </button>
+      </div>
+    </nav>
+    <sc-if value="{{ menuOpen }}">
+      <div style="border-top: 1px solid rgba(216,184,119,.16); background: rgba(20,17,12,.97); padding: 14px 22px 22px;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <sc-for list="{{ nav }}" as="item" hint-placeholder-count="6">
+            <a href="{{ item.href }}" onClick="{{ closeMenu }}" style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: #cbc2b0; padding: 13px 4px; border-bottom: 1px solid rgba(216,184,119,.08);">{{ item.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+  <!-- HERO -->
+  <section id="top" style="position: relative; min-height: 88vh; display: flex; align-items: flex-end; padding: 0;">
+    <div style="position: absolute; inset: 0;">{{ heroImgEl }}</div>
+    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,17,12,.95) 0%, rgba(20,17,12,.82) 38%, rgba(20,17,12,.55) 75%, rgba(20,17,12,.45) 100%), linear-gradient(180deg, rgba(20,17,12,.5) 0%, rgba(20,17,12,.4) 45%, rgba(20,17,12,.92) 100%);"></div>
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: 0 22px 72px; width: 100%;">
+      <div style="max-width: 720px; animation: floatUp .9s ease both;">
+        <div style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #d8b877; margin-bottom: 20px;">{{ t.heroEyebrow }}</div>
+        <h1 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(38px, 6vw, 68px); line-height: 1.02; margin: 0 0 22px; color: #f6efe0;">{{ t.heroTitle }}</h1>
+        <p style="font-size: clamp(16px,2.4vw,19px); line-height: 1.6; color: #c8bfae; max-width: 560px; margin: 0 0 34px; text-wrap: pretty;">{{ t.heroSub }}</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 40px;">
+          <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 9px; background: #d8b877; color: #14110c; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 600; letter-spacing: .5px; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 12px 28px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.heroCall }}</a>
+          <a href="https://www.booking.com/hotel/rs/the-only-one-apartment.html" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(216,184,119,.4); color: #ece5d6; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; letter-spacing: .5px; transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;" style-hover="transform: translateY(-2px); border-color: #d8b877; background: rgba(216,184,119,.12); color: #f6efe0;">{{ t.heroBooking }}</a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 28px;">
+          <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: 3px;">
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; color: #d8b877;">{{ s.big }}</span>
+              <span style="font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #9a9182;">{{ s.small }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section data-reveal="" style="background: #15110b; border-top: 1px solid rgba(216,184,119,.16); padding: 96px 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px; display: grid; grid-template-columns: 1fr; gap: 56px; align-items: center;" data-two-col="">
+    <div>
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 18px;">01 · {{ t.introKicker }}</div>
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); line-height: 1.04; margin: 0 0 26px; color: #f6efe0;">{{ t.introTitle }}</h2>
+      <p style="font-size: 17px; line-height: 1.7; color: #c2b9a8; margin: 0 0 20px; text-wrap: pretty;">{{ t.introP1 }}</p>
+      <p style="font-size: 17px; line-height: 1.7; color: #c2b9a8; margin: 0 0 30px; text-wrap: pretty;">{{ t.introP2 }}</p>
+      <a href="#apartmani" style="font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px solid #d8b877; padding-bottom: 4px;">{{ t.introCta }} →</a>
+    </div>
+    <div style="position: relative; aspect-ratio: 4/3; border-radius: 4px; overflow: hidden; border: 1px solid rgba(216,184,119,.14);">
+      <img src="images/332186676.jpg" alt="Recepcija" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    </div>
+    </div>
+  </section>
+
+  <!-- APARTMENTS -->
+  <section data-reveal="" id="apartmani" style="background: radial-gradient(1000px 520px at 12% -5%, rgba(216,184,119,.08), transparent 60%), #0f0c07; padding: 96px 0; border-top: 1px solid rgba(216,184,119,.16); border-bottom: 1px solid rgba(216,184,119,.1);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
+      <div style="text-align: center; margin-bottom: 56px;">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.aptKicker }}</div>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0; color: #f6efe0;">{{ t.aptTitle }}</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px;">
+        <sc-for list="{{ apartments }}" as="a" hint-placeholder-count="6">
+          <div style="background: #1a1611; border: 1px solid rgba(216,184,119,.14); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;" style-hover="border-color: rgba(216,184,119,.5); transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,.4);">
+            <a href="{{ a.galHref }}" style="aspect-ratio: 16/11; position: relative; overflow: hidden; display: block; cursor: pointer;">
+              {{ a.imgEl }}
+              <span style="position: absolute; top: 14px; left: 14px; background: rgba(216,184,119,.94); color: #14110c; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 5px 11px; border-radius: 999px; text-transform: uppercase;">{{ a.tag }}</span>
+            </a>
+            <div style="padding: 24px; display: flex; flex-direction: column; flex: 1;">
+              <h3 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 600; font-size: 25px; margin: 0 0 10px; color: #f2ead9;">{{ a.name }}</h3>
+              <p style="font-size: 15px; line-height: 1.6; color: #aaa192; margin: 0 0 20px; flex: 1;">{{ a.desc }}</p>
+              <div style="display: flex; align-items: baseline; gap: 7px; margin-bottom: 18px; padding-top: 16px; border-top: 1px solid rgba(216,184,119,.14);">
+                <span style="font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #8f8676;">{{ t.priceFrom }}</span>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 600; color: #d8b877; line-height: 1;">{{ a.price }}</span>
+                <span style="font-size: 13px; color: #8f8676;">{{ t.priceUnit }}</span>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+                <a href="#lokacija" style="font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #d8b877; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s ease, border-color .2s ease;" style-hover="color: #f0d9a6; border-bottom-color: #d8b877;">{{ t.aptBook }}</a>
+                <a href="{{ a.galHref }}" style="font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #8f8676; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s ease, border-color .2s ease;" style-hover="color: #d8b877; border-bottom-color: #d8b877;">{{ t.aptGallery }} →</a>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- AMENITIES -->
+  <section data-reveal="" id="pogodnosti" style="background: #0f0c07; border-top: 1px solid rgba(216,184,119,.16); padding: 96px 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.amKicker }}</div>
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0; color: #f6efe0;">{{ t.amTitle }}</h2>
+    </div>
+    <div data-amen="" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(216,184,119,.14); border: 1px solid rgba(216,184,119,.14); border-radius: 6px; overflow: hidden;">
+      <sc-for list="{{ amenities }}" as="am" hint-placeholder-count="6">
+        <div style="background: #17130d; padding: 28px; display: flex; align-items: center; gap: 18px;">
+          <div style="width: 48px; height: 48px; flex-shrink: 0; border: 1px solid rgba(216,184,119,.4); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #d8b877; font-family: 'Playfair Display', Georgia, serif; font-size: 21px; background: linear-gradient(145deg, rgba(216,184,119,.16), rgba(216,184,119,.03));">{{ am.n }}</div>
+          <div>
+            <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .5px; margin: 0 0 4px; color: #ece5d6;">{{ am.title }}</h3>
+            <p style="font-size: 14px; color: #9a9182; margin: 0;">{{ am.sub }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section data-reveal="" id="galerija" style="background: radial-gradient(1000px 520px at 88% -5%, rgba(111,163,155,.11), transparent 60%), #15110b; padding: 96px 0; border-top: 1px solid rgba(216,184,119,.16);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 44px;">
+        <div>
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.galKicker }}</div>
+          <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0; color: #f6efe0;">{{ t.galTitle }}</h2>
+        </div>
+        
+      </div>
+      <div style="position: relative; aspect-ratio: 16/9; width: 100%; max-width: 980px; max-height: 540px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 1px solid rgba(216,184,119,.14); background: #0d0a07;">
+        {{ galleryCurrentEl }}
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,17,12,0) 55%, rgba(20,17,12,.55) 100%); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 9px;">
+          <sc-for list="{{ galleryDots }}" as="d" hint-placeholder-count="6">
+            <div onClick="{{ d.go }}" style="{{ d.style }}"></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 44px;">
+        <a href="Galerija.html" style="display: inline-flex; align-items: center; gap: 10px; background: #d8b877; color: #14110c; padding: 17px 40px; border-radius: 999px; font-size: 16px; font-weight: 600; letter-spacing: .5px; box-shadow: 0 10px 30px rgba(216,184,119,.28); transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 16px 40px rgba(216,184,119,.45); background: #e7cd8d;">{{ t.galCta }} →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section data-reveal="" id="utisci" style="background: #15110b; border-top: 1px solid rgba(216,184,119,.16); padding: 96px 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
+    <div style="text-align: center; margin-bottom: 56px;">
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.revKicker }}</div>
+      <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0 0 12px; color: #f6efe0;">{{ t.revTitle }}</h2>
+      <p style="font-size: 14px; color: #8f8676; margin: 0;">{{ t.revNote }}</p>
+    </div>
+    <a href="https://www.booking.com/hotel/rs/the-only-one-apartment.html" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 18px; max-width: 440px; margin: 0 auto 44px; background: #1e1810; border: 1px solid rgba(216,184,119,.22); border-radius: 10px; padding: 20px 24px; transition: transform .2s ease, border-color .2s ease;" style-hover="transform: translateY(-2px); border-color: rgba(216,184,119,.5);">
+      <div style="flex-shrink: 0; width: 62px; height: 62px; border-radius: 10px; background: #d8b877; color: #14110c; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 24px;">{{ t.bkScore }}</div>
+      <div style="text-align: left;">
+        <div style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 16px; color: #f2ead9; margin-bottom: 3px;">{{ t.bkLabel }}</div>
+        <div style="font-size: 13px; color: #9a9182;">{{ t.bkSub }}</div>
+      </div>
+      <div style="margin-left: auto; color: #d8b877; font-size: 22px;">→</div>
+    </a>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px;">
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+        <div style="background: #1e1810; border: 1px solid rgba(216,184,119,.14); border-radius: 6px; padding: 32px; transition: transform .25s ease, border-color .25s ease;" style-hover="transform: translateY(-4px); border-color: rgba(216,184,119,.4);">
+          <p style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 21px; line-height: 1.5; color: #e6dccb; margin: 0 0 24px; text-wrap: pretty;">“{{ r.quote }}”</p>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 42px; height: 42px; border-radius: 999px; background: linear-gradient(145deg, rgba(216,184,119,.22), rgba(216,184,119,.05)); border: 1px solid rgba(216,184,119,.3); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', Georgia, serif; font-size: 20px; color: #d8b877;">{{ r.initial }}</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 600; color: #ece5d6;">{{ r.name }}</div>
+              <div style="font-size: 12px; letter-spacing: 1px; color: #8f8676; text-transform: uppercase;">{{ r.src }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section data-reveal="" id="lokacija" style="background: #0f0c07; border-top: 1px solid rgba(216,184,119,.16); padding: 96px 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
+    <div style="display: grid; grid-template-columns: 1fr; gap: 40px; align-items: stretch;" data-two-col="">
+      <div>
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 18px;">{{ t.locKicker }}</div>
+        <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,48px); line-height: 1.05; margin: 0 0 28px; color: #f6efe0;">{{ t.locTitle }}</h2>
+        <div style="display: flex; flex-direction: column; gap: 26px;">
+          <sc-for list="{{ contactBlocks }}" as="c" hint-placeholder-count="3">
+            <div style="border-left: 1px solid rgba(216,184,119,.35); padding-left: 18px;">
+              <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #d8b877; margin-bottom: 8px;">{{ c.label }}</div>
+              <div style="font-size: 17px; line-height: 1.5; color: #d6cdbb; white-space: pre-line;">{{ c.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px;">
+          <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 9px; background: #d8b877; color: #14110c; padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 600; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 12px 28px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.heroCall }}</a>
+          <a href="https://www.booking.com/hotel/rs/the-only-one-apartment.html" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(216,184,119,.4); color: #ece5d6; padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 500; transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;" style-hover="transform: translateY(-2px); border-color: #d8b877; background: rgba(216,184,119,.12); color: #f6efe0;">{{ t.heroBooking }}</a>
+        </div>
+      </div>
+      <div style="border-radius: 6px; overflow: hidden; border: 1px solid rgba(216,184,119,.14); min-height: 380px;">
+        <iframe title="Mapa" width="100%" height="100%" style="border: 0; display: block; min-height: 380px; filter: grayscale(.4) invert(.9) hue-rotate(180deg) contrast(.95);" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2902.588416694819!2d21.8969868!3d43.3228747!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4755b0b6149641fb%3A0xc76b0176b1091907!2sThe%20Only%20One%20Suites!5e0!3m2!1sen!2srs!4v1784198086670!5m2!1sen!2srs"></iframe>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: #0d0a07; border-top: 1px solid rgba(216,184,119,.14); padding: 64px 22px 34px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; padding-bottom: 44px; border-bottom: 1px solid rgba(216,184,119,.12);">
+        <div>
+          <img src="assets/logo-onlyone.png" alt="The Only One Apartments" style="display: block; height: 76px; width: auto; margin-bottom: 16px;">
+          <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 600; color: #f2ead9; margin-bottom: 6px;">The Only One</div>
+          <div style="font-size: 10px; letter-spacing: 4px; color: #d8b877; text-transform: uppercase; margin-bottom: 18px;">Apartments · Niš</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #8f8676; margin: 0; max-width: 260px; text-wrap: pretty;">{{ t.footTag }}</p>
+        </div>
+        <div>
+          <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #d8b877; margin-bottom: 18px;">{{ t.footApt }}</div>
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <sc-for list="{{ apartments }}" as="a" hint-placeholder-count="6">
+              <a href="#apartmani" style="font-size: 14px; color: #b3a996;">{{ a.name }}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #d8b877; margin-bottom: 18px;">{{ t.footContact }}</div>
+          <div style="display: flex; flex-direction: column; gap: 11px; font-size: 14px; color: #b3a996;">
+            <a href="tel:+381637836968">+381 63 783 6968</a>
+            <a href="mailto:onlyoneapartment@gmail.com">onlyoneapartment@gmail.com</a>
+            <span style="color: #8f8676;">Sedmi Juli 7, 18000 Niš</span>
+            <span style="color: #8f8676;">{{ t.footHours }}</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #d8b877; margin-bottom: 18px;">{{ t.footFollow }}</div>
+          <div style="display: flex; flex-direction: column; gap: 11px; font-size: 14px;">
+            <a href="https://www.facebook.com/theonlyoneapartmentsandsuites/" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://www.instagram.com/theonlyone_apartmani_nis/" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div style="padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 12px; color: #6f675a; letter-spacing: .5px;">
+        <span>© 2026 The Only One Apartments · {{ t.footRights }}</span>
+        <span>Niš, Srbija</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: &quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { lang: 'sr', galIdx: 0, menuOpen: false };
+
+  galImgs = [
+    'images/apartmaniza2osobe-6-2048x1296.jpg',
+    'images/644290006.jpg',
+    'images/644290413.jpg',
+    'images/644290418.jpg',
+    'images/dnevni-odmor-nis-1.jpg',
+    'images/332186676.jpg',
+  ];
+
+  componentDidMount() {
+    this._galTimer = setInterval(() => {
+      this.setState((s) => ({ galIdx: (s.galIdx + 1) % this.galImgs.length }));
+    }, 3800);
+    this.revealInit();
+  }
+  componentWillUnmount() {
+    clearInterval(this._galTimer);
+    if (this._revealIO) this._revealIO.disconnect();
+  }
+  revealInit() {
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    els.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity .7s ease, transform .7s ease';
+    });
+    if (!('IntersectionObserver' in window)) {
+      els.forEach((el) => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      return;
+    }
+    this._revealIO = new IntersectionObserver((ents) => {
+      ents.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'none';
+          this._revealIO.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => this._revealIO.observe(el));
+  }
+
+  dict() {
+    const sr = {
+      navBook: 'Rezerviši',
+      nav: [
+        { label: 'Apartmani', href: '#apartmani' },
+        { label: 'Pogodnosti', href: '#pogodnosti' },
+        { label: 'Galerija', href: 'Galerija.html' },
+        { label: 'Utisci', href: '#utisci' },
+        { label: 'Lokacija', href: '#lokacija' },
+      ],
+      heroEyebrow: 'Stan na dan · Centar Niša',
+      heroTitle: 'Vaš dom u srcu Niša',
+      heroSub: 'Komforan, moderan smeštaj u samom centru grada, hotelski standard, potpuna privatnost i topla dobrodošlica na svakom koraku.',
+      heroCall: 'Pozovi i rezerviši',
+      heroBooking: 'Rezerviši na Booking.com',
+      heroStats: [
+        { big: '100m', small: 'od centra' },
+        { big: '00–24', small: 'recepcija' },
+        { big: 'Free', small: 'privatni parking' },
+      ],
+      introKicker: 'O nama',
+      introTitle: 'Idealan smeštaj na odličnoj lokaciji',
+      introP1: 'Svi naši apartmani u Nišu pružaju hotelski standard i vrhunsku udobnost. Svaki apartman ima poseban ulaz i sopstveno moderno opremljeno kupatilo, TV sa preko 100 kanala i udoban deo za sedenje i ručavanje.',
+      introP2: 'Ceo objekat pokriven je brzom WiFi mrežom. Ako tražite spoj komfora, privatnosti i praktičnosti u centru Niša, na pravom ste mestu.',
+      introCta: 'Pogledaj apartmane',
+      aptKicker: 'Ponuda',
+      aptTitle: 'Naši apartmani',
+      aptBook: 'Rezerviši',
+      aptGallery: 'Slike',
+      priceFrom: 'od',
+      priceUnit: '/ noć',
+      amKicker: 'Pogodnosti',
+      amTitle: 'Sve što vam treba za miran boravak',
+      galKicker: 'Galerija',
+      galTitle: 'Pogledajte naše apartmane',
+      galNote: 'Enterijer, kuhinja, kupatilo i privatni parking naših apartmana.',
+      galCta: 'Pogledaj celu galeriju',
+      revKicker: 'Utisci gostiju',
+      revTitle: 'Šta kažu naši gosti',
+      revNote: 'Utisci naših gostiju sa Booking.com',
+      bkScore: '8.6',
+      bkLabel: 'Ocena na Booking.com',
+      bkSub: 'Izuzetno, na osnovu recenzija gostiju',
+      attKicker: 'Vodič kroz Niš',
+      attTitle: 'Upoznajte grad',
+      locKicker: 'Kontakt & lokacija',
+      locTitle: 'Nalazimo se 100m od centra Niša',
+      footTag: 'Uživajte u udobnom smeštaju u centru grada, idealnom za poslovna putovanja i odmor. Vaša udobnost je naš prioritet.',
+      footApt: 'Apartmani',
+      footContact: 'Kontakt',
+      footFollow: 'Zaprati nas',
+      footHours: 'Recepcija: svaki dan 00–24h',
+      footRights: 'Sva prava zadržana.',
+      apartments: [
+        { name: 'Deluxe apartmani', tag: 'Deluxe', ph: 'deluxe apartman', desc: 'Prostrani apartmani sa dodatnim luksuzom i poklon šampanjcem u ceni.' },
+        { name: 'Apartmani za 2 osobe', tag: '2 osobe', ph: 'apartman 2 osobe', desc: 'Idealni za parove i poslovne goste koji cene mir i privatnost.' },
+        { name: 'Apartmani za 3 osobe', tag: '3 osobe', ph: 'apartman 3 osobe', desc: 'Više prostora za manje društvo ili porodicu u centru grada.' },
+        { name: 'Apartmani za 4 osobe', tag: '4 osobe', ph: 'apartman 4 osobe', desc: 'Savršeni za porodice i grupe prijatelja koji putuju zajedno.' },
+        { name: 'Stan na dan Niš', tag: 'Fleksibilno', ph: 'stan na dan', desc: 'Fleksibilan boravak, plaćate tačno onoliko koliko ostajete.' },
+        { name: 'Dnevni odmor', tag: 'Day use', ph: 'dnevni odmor', desc: 'Predah tokom dana, u miru i potpunoj privatnosti.' },
+      ],
+      amenities: [
+        { n: '1', title: 'Perfektna lokacija', sub: '100m od centra Niša' },
+        { n: '2', title: 'Brz WiFi', sub: 'Internet u celom objektu' },
+        { n: '3', title: 'Komforan smeštaj', sub: 'Hotelski standard' },
+        { n: '4', title: 'Privatan parking', sub: 'Pokriven kamerama' },
+        { n: '5', title: 'Video nadzor 24/7', sub: 'Sigurnost i mir' },
+        { n: '6', title: 'Klimatizacija', sub: 'Grejanje i hlađenje' },
+      ],
+      reviews: [
+        { quote: 'Sve je bilo super, čisto, uredno, sve pohvale.', name: 'Jelić', initial: 'J', src: 'Booking.com' },
+        { quote: 'Sve je bilo u najboljem redu!! Osoblje je bilo ljubazno!! Smeštaj je bio baš udoban!! Preporuke svima!!', name: 'Nikola', initial: 'N', src: 'Booking.com' },
+        { quote: 'Jako blizu centra grada, sa parking mestom u dvorištu. Komunikacija sa objektom odlična.', name: 'Robert', initial: 'R', src: 'Booking.com' },
+      ],
+      attractions: [
+        { name: 'Niška Tvrđava', dist: '10 min šetnje', ph: 'niška tvrđava', desc: 'Simbol grada i najlepše mesto za šetnju uz reku Nišavu.' },
+        { name: 'Kazandžijsko sokače', dist: '8 min šetnje', ph: 'stari grad', desc: 'Srce noćnog života, kafići, restorani i domaća kuhinja.' },
+        { name: 'Ćele-kula', dist: '10 min vožnje', ph: 'ćele-kula', desc: 'Jedinstven istorijski spomenik i priča o prošlosti Niša.' },
+      ],
+      contactBlocks: [
+        { label: 'Adresa', value: 'Sedmi Juli 7\n18000 Niš, Srbija' },
+        { label: 'Telefon', value: '+381 63 783 6968' },
+        { label: 'Radno vreme', value: 'Recepcija svaki dan 00–24h' },
+      ],
+      gallery: [],
+    };
+
+    const en = {
+      navBook: 'Book now',
+      nav: [
+        { label: 'Apartments', href: '#apartmani' },
+        { label: 'Amenities', href: '#pogodnosti' },
+        { label: 'Gallery', href: 'Galerija.html' },
+        { label: 'Reviews', href: '#utisci' },
+        { label: 'Location', href: '#lokacija' },
+      ],
+      heroEyebrow: 'Daily rental · Niš city center',
+      heroTitle: 'Your home in the heart of Niš',
+      heroSub: 'Comfortable, modern accommodation right in the city center, hotel-grade comfort, complete privacy and a warm welcome at every step.',
+      heroCall: 'Call to book',
+      heroBooking: 'Book on Booking.com',
+      heroStats: [
+        { big: '100m', small: 'to center' },
+        { big: '00–24', small: 'reception' },
+        { big: 'Free', small: 'private parking' },
+      ],
+      introKicker: 'About us',
+      introTitle: 'The perfect stay in a prime location',
+      introP1: 'All of our apartments in Niš offer hotel-grade comfort. Each has a private entrance, its own modern bathroom, a TV with 100+ channels and a cosy seating and dining area.',
+      introP2: 'The entire building is covered by fast WiFi. If you are looking for the blend of comfort, privacy and convenience in the center of Niš, you are in the right place.',
+      introCta: 'View apartments',
+      aptKicker: 'Our offer',
+      aptTitle: 'Our apartments',
+      aptBook: 'Book',
+      aptGallery: 'Photos',
+      priceFrom: 'from',
+      priceUnit: '/ night',
+      amKicker: 'Amenities',
+      amTitle: 'Everything you need for a calm stay',
+      galKicker: 'Gallery',
+      galTitle: 'Take a look inside',
+      galNote: 'Interiors, kitchen, bathroom and private parking of our apartments.',
+      galCta: 'View full gallery',
+      revKicker: 'Guest reviews',
+      revTitle: 'What our guests say',
+      revNote: 'What our guests say on Booking.com',
+      bkScore: '8.6',
+      bkLabel: 'Booking.com rating',
+      bkSub: 'Superb, based on guest reviews',
+      attKicker: 'Niš guide',
+      attTitle: 'Discover the city',
+      locKicker: 'Contact & location',
+      locTitle: 'We are 100m from the center of Niš',
+      footTag: 'Enjoy comfortable accommodation in the city center, ideal for business trips and holidays. Your comfort is our priority.',
+      footApt: 'Apartments',
+      footContact: 'Contact',
+      footFollow: 'Follow us',
+      footHours: 'Reception: every day 00–24h',
+      footRights: 'All rights reserved.',
+      apartments: [
+        { name: 'Deluxe apartments', tag: 'Deluxe', ph: 'deluxe apartment', desc: 'Spacious apartments with extra luxury and a welcome bottle of champagne included.' },
+        { name: 'Apartments for 2', tag: '2 guests', ph: 'apartment for 2', desc: 'Ideal for couples and business guests who value peace and privacy.' },
+        { name: 'Apartments for 3', tag: '3 guests', ph: 'apartment for 3', desc: 'Extra room for a small group or family in the city center.' },
+        { name: 'Apartments for 4', tag: '4 guests', ph: 'apartment for 4', desc: 'Perfect for families and groups of friends travelling together.' },
+        { name: 'Daily rental Niš', tag: 'Flexible', ph: 'daily rental', desc: 'Flexible stay, pay for exactly as long as you stay.' },
+        { name: 'Day use', tag: 'Day use', ph: 'day use', desc: 'A daytime break in peace and complete privacy.' },
+      ],
+      amenities: [
+        { n: '1', title: 'Prime location', sub: '100m from center' },
+        { n: '2', title: 'Fast WiFi', sub: 'Internet throughout' },
+        { n: '3', title: 'Comfortable stay', sub: 'Hotel standard' },
+        { n: '4', title: 'Private parking', sub: 'CCTV covered' },
+        { n: '5', title: 'CCTV 24/7', sub: 'Safety & peace' },
+        { n: '6', title: 'Air conditioning', sub: 'Heating & cooling' },
+      ],
+      reviews: [
+        { quote: 'Everything was great, clean, tidy, nothing but praise.', name: 'Jelić', initial: 'J', src: 'Booking.com' },
+        { quote: 'Everything was perfect!! The staff were kind!! The accommodation was really comfortable!! Recommended to everyone!!', name: 'Nikola', initial: 'N', src: 'Booking.com' },
+        { quote: 'Very close to the city center, with a parking spot in the yard. Communication with the host was excellent.', name: 'Robert', initial: 'R', src: 'Booking.com' },
+      ],
+      attractions: [
+        { name: 'Niš Fortress', dist: '10 min walk', ph: 'niš fortress', desc: 'The symbol of the city and the loveliest spot for a walk by the Nišava river.' },
+        { name: 'Kazandžijsko sokače', dist: '8 min walk', ph: 'old town', desc: 'The heart of nightlife, cafés, restaurants and local cuisine.' },
+        { name: 'Skull Tower', dist: '10 min drive', ph: 'skull tower', desc: 'A unique historical monument telling the story of the citys past.' },
+      ],
+      contactBlocks: [
+        { label: 'Address', value: 'Sedmi Juli 7\n18000 Niš, Serbia' },
+        { label: 'Phone', value: '+381 63 783 6968' },
+        { label: 'Opening hours', value: 'Reception every day 00–24h' },
+      ],
+      gallery: [],
+    };
+
+    return this.state.lang === 'en' ? en : sr;
+  }
+
+  galleryTiles() {
+    const spans = [
+      'grid-column: span 2; grid-row: span 2;',
+      'grid-column: span 1; grid-row: span 1;',
+      'grid-column: span 1; grid-row: span 1;',
+      'grid-column: span 1; grid-row: span 2;',
+      'grid-column: span 1; grid-row: span 1;',
+      'grid-column: span 2; grid-row: span 1;',
+      'grid-column: span 1; grid-row: span 1;',
+    ];
+    const imgs = [
+      'images/apartmaniza2osobe-6-2048x1296.jpg',
+      'images/644290006.jpg',
+      'images/644290410.jpg',
+      'images/644290413.jpg',
+      'images/332489486.jpg',
+      'images/644290418.jpg',
+      'images/332186676.jpg',
+    ];
+    return spans.map((s, i) => ({
+      style: s,
+      imgEl: React.createElement('img', { src: imgs[i], alt: 'Apartman', style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
+    }));
+  }
+
+  renderVals() {
+    const t = this.dict();
+    const btnBase = 'border: none; background: transparent; cursor: pointer; font-family: Jost, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; padding: 6px 12px; border-radius: 999px;';
+    const active = btnBase + ' background: #d8b877; color: #14110c;';
+    const inactive = btnBase + ' background: transparent; color: #9a9182;';
+    const aptImgs = [
+      'images/644290006.jpg',
+      'images/644290418.jpg',
+      'images/644290413.jpg',
+      'images/apartmaniza2osobe-6-2048x1296.jpg',
+      'images/644290410.jpg',
+      'images/dnevni-odmor-nis-1.jpg',
+    ];
+    const prices = ['€45', '€30', '€40', '€50', '€35', '€20'];
+    const galKeys = ['deluxe', 'p2', 'p3', 'p4', 'stan', 'dnevni'];
+    const apartments = t.apartments.map((a, i) => ({
+      ...a,
+      img: aptImgs[i],
+      price: prices[i],
+      galHref: 'Galerija.html#' + galKeys[i],
+      imgEl: React.createElement('img', { src: aptImgs[i], alt: a.name, style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
+    }));
+    const heroImgEl = React.createElement('img', {
+      src: 'images/hero-fasada.png',
+      alt: 'The Only One Apartments · ulaz',
+      style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '72% 45%', display: 'block' },
+    });
+    const gi = this.state.galIdx;
+    const galleryCurrentEl = React.createElement('img', {
+      key: gi,
+      src: this.galImgs[gi],
+      alt: 'Apartman',
+      style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', animation: 'gFade .9s ease' },
+    });
+    const galleryDots = this.galImgs.map((_, i) => ({
+      go: () => this.setState({ galIdx: i }),
+      style: 'width: 9px; height: 9px; border-radius: 999px; cursor: pointer; transition: all .3s ease; background: ' + (i === gi ? '#d8b877' : 'rgba(236,229,214,.4)') + '; ' + (i === gi ? 'width: 26px;' : ''),
+    }));
+    return {
+      t,
+      nav: t.nav,
+      heroStats: t.heroStats,
+      apartments,
+      heroImgEl,
+      galleryCurrentEl,
+      galleryDots,
+      heroImg: 'images/apartmaniza2osobe-6-2048x1296.jpg',
+      introImg: 'images/332186676.jpg',
+      amenities: t.amenities,
+      reviews: t.reviews,
+      attractions: t.attractions,
+      contactBlocks: t.contactBlocks,
+      gallery: this.galleryTiles(),
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      setSr: () => this.setState({ lang: 'sr' }),
+      setEn: () => this.setState({ lang: 'en' }),
+      srBtnStyle: this.state.lang === 'sr' ? active : inactive,
+      enBtnStyle: this.state.lang === 'en' ? active : inactive,
+    };
+  }
+}
+</script>
+</body>
+</html>
