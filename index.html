@@ -23,9 +23,15 @@
     [data-nav-links] { display: flex !important; }
     [data-nav-toggle] { display: none !important; }
   }
+  @media (min-width: 560px) {
+    [data-amen] { grid-template-columns: 1fr 1fr !important; }
+  }
   @media (min-width: 860px) {
     [data-two-col] { grid-template-columns: 1fr 1fr !important; }
     [data-amen] { grid-template-columns: repeat(3, 1fr) !important; }
+  }
+  @media (max-width: 600px) {
+    [data-wordmark] { display: none !important; }
   }
   @media (max-width: 640px) {
     [data-gallery] { grid-template-columns: repeat(2, 1fr) !important; }
@@ -39,7 +45,7 @@
     <nav style="max-width: 1200px; margin: 0 auto; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 18px;">
       <a href="#top" style="display: flex; align-items: center; gap: 12px; line-height: 1; color: #ece5d6;">
         <img src="assets/logo-onlyone.png" alt="The Only One Apartments" style="display: block; height: 48px; width: auto;">
-        <span style="display: flex; flex-direction: column;">
+        <span data-wordmark="" style="display: flex; flex-direction: column;">
           <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: .5px;">The Only One</span>
           <span style="font-size: 10px; letter-spacing: 4px; color: #d8b877; text-transform: uppercase; margin-top: 3px;">Apartments · Niš</span>
         </span>
@@ -132,7 +138,7 @@
               <p style="font-size: 15px; line-height: 1.6; color: #aaa192; margin: 0 0 20px; flex: 1;">{{ a.desc }}</p>
               <div style="display: flex; align-items: baseline; gap: 7px; margin-bottom: 18px; padding-top: 16px; border-top: 1px solid rgba(216,184,119,.14);">
                 <span style="font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #8f8676;">{{ t.priceFrom }}</span>
-                <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 600; color: #d8b877; line-height: 1;">{{ a.price }}</span>
+                <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 600; color: #d8b877; line-height: 1;">{{ a.price }}</span>
                 <span style="font-size: 13px; color: #8f8676;">{{ t.priceUnit }}</span>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
@@ -153,7 +159,7 @@
       <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.amKicker }}</div>
       <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0; color: #f6efe0;">{{ t.amTitle }}</h2>
     </div>
-    <div data-amen="" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(216,184,119,.14); border: 1px solid rgba(216,184,119,.14); border-radius: 6px; overflow: hidden;">
+    <div data-amen="" style="display: grid; grid-template-columns: 1fr; gap: 1px; background: rgba(216,184,119,.14); border: 1px solid rgba(216,184,119,.14); border-radius: 6px; overflow: hidden;">
       <sc-for list="{{ amenities }}" as="am" hint-placeholder-count="6">
         <div style="background: #17130d; padding: 28px; display: flex; align-items: center; gap: 18px;">
           <div style="width: 48px; height: 48px; flex-shrink: 0; border: 1px solid rgba(216,184,119,.4); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #d8b877; font-family: 'Playfair Display', Georgia, serif; font-size: 21px; background: linear-gradient(145deg, rgba(216,184,119,.16), rgba(216,184,119,.03));">{{ am.n }}</div>
