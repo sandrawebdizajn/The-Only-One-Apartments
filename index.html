@@ -297,6 +297,20 @@ class Component extends DCLogic {
       this.setState((s) => ({ galIdx: (s.galIdx + 1) % this.galImgs.length }));
     }, 3800);
     this.revealInit();
+    this.scrollToHash();
+  }
+  scrollToHash() {
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    const doScroll = () => {
+      const el = document.querySelector(hash);
+      if (!el) return;
+      document.querySelectorAll('[data-reveal]').forEach((s) => { s.style.opacity = '1'; s.style.transform = 'none'; });
+      const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: y, behavior: 'auto' });
+    };
+    setTimeout(doScroll, 60);
+    setTimeout(doScroll, 300);
   }
   componentWillUnmount() {
     clearInterval(this._galTimer);
@@ -333,7 +347,7 @@ class Component extends DCLogic {
         { label: 'Pogodnosti', href: '#pogodnosti' },
         { label: 'Galerija', href: 'Galerija.html' },
         { label: 'Utisci', href: '#utisci' },
-        { label: 'Lokacija', href: '#lokacija' },
+        { label: 'Kontakt', href: '#lokacija' },
       ],
       heroEyebrow: 'Stan na dan · Centar Niša',
       heroTitle: 'Vaš dom u srcu Niša',
@@ -419,7 +433,7 @@ class Component extends DCLogic {
         { label: 'Amenities', href: '#pogodnosti' },
         { label: 'Gallery', href: 'Galerija.html' },
         { label: 'Reviews', href: '#utisci' },
-        { label: 'Location', href: '#lokacija' },
+        { label: 'Contact', href: '#lokacija' },
       ],
       heroEyebrow: 'Daily rental · Niš city center',
       heroTitle: 'Your home in the heart of Niš',
