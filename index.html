@@ -149,6 +149,9 @@
           </div>
         </sc-for>
       </div>
+      <div style="text-align: center; margin-top: 56px;">
+        <a href="Galerija.html" style="display: inline-flex; align-items: center; gap: 10px; background: #d8b877; color: #14110c; padding: 17px 40px; border-radius: 999px; font-size: 16px; font-weight: 600; letter-spacing: .5px; box-shadow: 0 10px 30px rgba(216,184,119,.28); transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 16px 40px rgba(216,184,119,.45); background: #e7cd8d;">{{ t.galCta }} →</a>
+      </div>
     </div>
   </section>
 
@@ -162,7 +165,7 @@
     <div data-amen="" style="display: grid; grid-template-columns: 1fr; gap: 1px; background: rgba(216,184,119,.14); border: 1px solid rgba(216,184,119,.14); border-radius: 6px; overflow: hidden;">
       <sc-for list="{{ amenities }}" as="am" hint-placeholder-count="6">
         <div style="background: #17130d; padding: 28px; display: flex; align-items: center; gap: 18px;">
-          <div style="width: 48px; height: 48px; flex-shrink: 0; border: 1px solid rgba(216,184,119,.4); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #d8b877; font-family: 'Playfair Display', Georgia, serif; font-size: 21px; background: linear-gradient(145deg, rgba(216,184,119,.16), rgba(216,184,119,.03));">{{ am.n }}</div>
+          <div style="width: 48px; height: 48px; flex-shrink: 0; border: 1px solid rgba(216,184,119,.4); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #d8b877; background: linear-gradient(145deg, rgba(216,184,119,.16), rgba(216,184,119,.03));">{{ am.icon }}</div>
           <div>
             <h3 style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .5px; margin: 0 0 4px; color: #ece5d6;">{{ am.title }}</h3>
             <p style="font-size: 14px; color: #9a9182; margin: 0;">{{ am.sub }}</p>
@@ -170,31 +173,6 @@
         </div>
       </sc-for>
     </div>
-    </div>
-  </section>
-
-  <!-- GALLERY -->
-  <section data-reveal="" id="galerija" style="background: radial-gradient(1000px 520px at 88% -5%, rgba(111,163,155,.11), transparent 60%), #15110b; padding: 96px 0; border-top: 1px solid rgba(216,184,119,.16);">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 22px;">
-      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 44px;">
-        <div>
-          <div style="font-family: 'Montserrat', sans-serif; font-size: 12px; letter-spacing: 3px; color: #d8b877; margin-bottom: 14px;">{{ t.galKicker }}</div>
-          <h2 style="font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,52px); margin: 0; color: #f6efe0;">{{ t.galTitle }}</h2>
-        </div>
-        
-      </div>
-      <div style="position: relative; aspect-ratio: 16/9; width: 100%; max-width: 980px; max-height: 540px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 1px solid rgba(216,184,119,.14); background: #0d0a07;">
-        {{ galleryCurrentEl }}
-        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,17,12,0) 55%, rgba(20,17,12,.55) 100%); pointer-events: none;"></div>
-        <div style="position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; gap: 9px;">
-          <sc-for list="{{ galleryDots }}" as="d" hint-placeholder-count="6">
-            <div onClick="{{ d.go }}" style="{{ d.style }}"></div>
-          </sc-for>
-        </div>
-      </div>
-      <div style="text-align: center; margin-top: 44px;">
-        <a href="Galerija.html" style="display: inline-flex; align-items: center; gap: 10px; background: #d8b877; color: #14110c; padding: 17px 40px; border-radius: 999px; font-size: 16px; font-weight: 600; letter-spacing: .5px; box-shadow: 0 10px 30px rgba(216,184,119,.28); transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-3px); box-shadow: 0 16px 40px rgba(216,184,119,.45); background: #e7cd8d;">{{ t.galCta }} →</a>
-      </div>
     </div>
   </section>
 
@@ -548,6 +526,51 @@ class Component extends DCLogic {
     }));
   }
 
+  amenityIcon(i) {
+    const p = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const svg = (children) => React.createElement('svg', { width: 24, height: 24, viewBox: '0 0 24 24', ...p }, children);
+    const el = React.createElement;
+    switch (i) {
+      case 0: // location pin
+        return svg([
+          el('path', { key: 'a', d: 'M12 21c4.5-4.2 7-7.6 7-11a7 7 0 1 0-14 0c0 3.4 2.5 6.8 7 11z' }),
+          el('circle', { key: 'b', cx: 12, cy: 10, r: 2.4 }),
+        ]);
+      case 1: // wifi
+        return svg([
+          el('path', { key: 'a', d: 'M4 9c4.5-3.6 11.5-3.6 16 0' }),
+          el('path', { key: 'b', d: 'M7 12.5c3-2.4 7-2.4 10 0' }),
+          el('path', { key: 'c', d: 'M9.7 15.8c1.4-1.1 3.2-1.1 4.6 0' }),
+          el('circle', { key: 'd', cx: 12, cy: 19, r: 0.6, fill: 'currentColor' }),
+        ]);
+      case 2: // bed / comfort
+        return svg([
+          el('path', { key: 'a', d: 'M3 17v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4' }),
+          el('path', { key: 'b', d: 'M3 17v2M21 17v2' }),
+          el('path', { key: 'c', d: 'M7 11V9a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 17 9v2' }),
+        ]);
+      case 3: // car / parking
+        return svg([
+          el('path', { key: 'a', d: 'M5 16v2M19 16v2' }),
+          el('path', { key: 'b', d: 'M4 16v-3l1.6-4a2 2 0 0 1 1.9-1.3h9a2 2 0 0 1 1.9 1.3L20 13v3z' }),
+          el('circle', { key: 'c', cx: 7.5, cy: 16, r: 1.3 }),
+          el('circle', { key: 'd', cx: 16.5, cy: 16, r: 1.3 }),
+        ]);
+      case 4: // shield / cctv
+        return svg([
+          el('path', { key: 'a', d: 'M12 3l7 2.5v5c0 4.3-3 7.6-7 8.5-4-0.9-7-4.2-7-8.5v-5z' }),
+          el('circle', { key: 'b', cx: 12, cy: 11, r: 2 }),
+        ]);
+      case 5: // snowflake / AC
+        return svg([
+          el('path', { key: 'a', d: 'M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9' }),
+          el('path', { key: 'b', d: 'M12 6.5l2-2M12 6.5l-2-2M12 17.5l2 2M12 17.5l-2 2' }),
+        ]);
+      default:
+        return null;
+    }
+  }
+
   renderVals() {
     const t = this.dict();
     const btnBase = 'border: none; background: transparent; cursor: pointer; font-family: Jost, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; padding: 6px 12px; border-radius: 999px;';
@@ -596,7 +619,7 @@ class Component extends DCLogic {
       galleryDots,
       heroImg: 'images/apartmaniza2osobe-6-2048x1296.jpg',
       introImg: 'images/332186676.jpg',
-      amenities: t.amenities,
+      amenities: t.amenities.map((am, i) => ({ ...am, icon: this.amenityIcon(i) })),
       reviews: t.reviews,
       attractions: t.attractions,
       contactBlocks: t.contactBlocks,
