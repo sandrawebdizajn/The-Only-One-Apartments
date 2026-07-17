@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="sr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,8 @@
 <body>
 <x-dc>
 <helmet>
+<title>Galerija · The Only One Apartments Niš</title>
+<meta name="description" content="Fotografije apartmana, recepcije i privatnog parkinga The Only One Apartments u centru Niša.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -80,8 +82,8 @@
               </div>
             </sc-for>
           </div>
-          <button onClick="{{ slidePrev }}" aria-label="Prethodna" style="{{ arrowPrevStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">‹</button>
-          <button onClick="{{ slideNext }}" aria-label="Sledeća" style="{{ arrowNextStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">›</button>
+          <button onClick="{{ slidePrev }}" aria-label="{{ t.ariaPrev }}" style="{{ arrowPrevStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">‹</button>
+          <button onClick="{{ slideNext }}" aria-label="{{ t.ariaNext }}" style="{{ arrowNextStyle }}" style-hover="background: #d8b877; color: #14110c; border-color: #d8b877;">›</button>
         </div>
       </div>
     </sc-for>
@@ -93,7 +95,7 @@
     <p style="font-size: 16px; color: #aaa192; margin: 0 0 30px;">{{ t.ctaSub }}</p>
     <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;">
       <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 9px; background: #d8b877; color: #14110c; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 600; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 12px 28px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.heroCall }}</a>
-      <a href="https://www.booking.com/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(216,184,119,.4); color: #ece5d6; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;" style-hover="transform: translateY(-2px); border-color: #d8b877; background: rgba(216,184,119,.12); color: #f6efe0;">{{ t.heroBooking }}</a>
+      <a href="https://www.booking.com/hotel/rs/the-only-one-apartment.html" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(216,184,119,.4); color: #ece5d6; padding: 15px 28px; border-radius: 999px; font-size: 15px; font-weight: 500; transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;" style-hover="transform: translateY(-2px); border-color: #d8b877; background: rgba(216,184,119,.12); color: #f6efe0;">{{ t.heroBooking }}</a>
     </div>
   </section>
 
@@ -101,7 +103,7 @@
   <sc-if value="{{ lightbox }}">
     <div onClick="{{ closeLightbox }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(10,8,5,.93); display: flex; align-items: center; justify-content: center; padding: 30px;">
       {{ lightboxEl }}
-      <button onClick="{{ closeLightbox }}" aria-label="Zatvori" style="position: fixed; top: 20px; right: 24px; width: 46px; height: 46px; border-radius: 999px; border: 1px solid rgba(216,184,119,.4); background: rgba(20,17,12,.8); color: #ece5d6; font-size: 24px; cursor: pointer; line-height: 1;">×</button>
+      <button onClick="{{ closeLightbox }}" aria-label="{{ t.ariaClose }}" style="position: fixed; top: 20px; right: 24px; width: 46px; height: 46px; border-radius: 999px; border: 1px solid rgba(216,184,119,.4); background: rgba(20,17,12,.8); color: #ece5d6; font-size: 24px; cursor: pointer; line-height: 1;">×</button>
     </div>
   </sc-if>
 
@@ -169,6 +171,9 @@ class Component extends DCLogic {
         { label: 'Početna', href: 'index.html' },
       ],
       back: 'Nazad na početnu',
+      ariaPrev: 'Prethodna',
+      ariaNext: 'Sledeća',
+      ariaClose: 'Zatvori',
       kicker: 'Galerija',
       title: 'Naši apartmani u slici',
       intro: 'Pogledajte fotografije po tipu apartmana, kao i zajedničke prostore, recepciju i privatni parking.',
@@ -194,6 +199,9 @@ class Component extends DCLogic {
         { label: 'Home', href: 'index.html' },
       ],
       back: 'Back to home',
+      ariaPrev: 'Previous',
+      ariaNext: 'Next',
+      ariaClose: 'Close',
       kicker: 'Gallery',
       title: 'Our apartments in pictures',
       intro: 'Browse photos by apartment type, plus the shared spaces, reception and private parking.',

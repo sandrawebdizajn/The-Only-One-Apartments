@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="sr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,8 @@
 <body>
 <x-dc>
 <helmet>
+<title>The Only One Apartments · Stan na dan Niš</title>
+<meta name="description" content="Komforan smeštaj na dan u centru Niša — apartmani hotelskog standarda, besplatan privatni parking i recepcija 00–24h.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Montserrat:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
@@ -32,9 +34,6 @@
   }
   @media (max-width: 600px) {
     [data-wordmark] { display: none !important; }
-  }
-  @media (max-width: 640px) {
-    [data-gallery] { grid-template-columns: repeat(2, 1fr) !important; }
   }
 </style>
 </helmet>
@@ -61,7 +60,7 @@
           <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
         </div>
         <a href="tel:+381637836968" style="display: inline-flex; align-items: center; gap: 8px; background: #d8b877; color: #14110c; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .5px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease;" style-hover="transform: translateY(-2px); box-shadow: 0 10px 22px rgba(216,184,119,.35); background: #e7cd8d;">{{ t.navBook }}</a>
-        <button onClick="{{ toggleMenu }}" aria-label="Meni" data-nav-toggle="" style="display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 0 10px; background: transparent; border: 1px solid rgba(216,184,119,.35); border-radius: 8px; cursor: pointer;">
+        <button onClick="{{ toggleMenu }}" aria-label="{{ t.ariaMenu }}" data-nav-toggle="" style="display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 0 10px; background: transparent; border: 1px solid rgba(216,184,119,.35); border-radius: 8px; cursor: pointer;">
           <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
           <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
           <span style="display: block; height: 2px; background: #d8b877; border-radius: 2px;"></span>
@@ -281,21 +280,9 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: &quot;100%&quot;}}">
 class Component extends DCLogic {
-  state = { lang: 'sr', galIdx: 0, menuOpen: false };
-
-  galImgs = [
-    'images/apartmaniza2osobe-6-2048x1296.jpg',
-    'images/644290006.jpg',
-    'images/644290413.jpg',
-    'images/644290418.jpg',
-    'images/dnevni-odmor-nis-1.jpg',
-    'images/332186676.jpg',
-  ];
+  state = { lang: 'sr', menuOpen: false };
 
   componentDidMount() {
-    this._galTimer = setInterval(() => {
-      this.setState((s) => ({ galIdx: (s.galIdx + 1) % this.galImgs.length }));
-    }, 3800);
     this.revealInit();
     this.scrollToHash();
   }
@@ -313,7 +300,6 @@ class Component extends DCLogic {
     setTimeout(doScroll, 300);
   }
   componentWillUnmount() {
-    clearInterval(this._galTimer);
     if (this._revealIO) this._revealIO.disconnect();
   }
   revealInit() {
@@ -382,8 +368,7 @@ class Component extends DCLogic {
       bkScore: '8.6',
       bkLabel: 'Ocena na Booking.com',
       bkSub: 'Izuzetno, na osnovu recenzija gostiju',
-      attKicker: 'Vodič kroz Niš',
-      attTitle: 'Upoznajte grad',
+      ariaMenu: 'Meni',
       locKicker: 'Kontakt & lokacija',
       locTitle: 'Nalazimo se 100m od centra Niša',
       footTag: 'Uživajte u udobnom smeštaju u centru grada, idealnom za poslovna putovanja i odmor. Vaša udobnost je naš prioritet.',
@@ -413,17 +398,11 @@ class Component extends DCLogic {
         { quote: 'Sve je bilo u najboljem redu!! Osoblje je bilo ljubazno!! Smeštaj je bio baš udoban!! Preporuke svima!!', name: 'Nikola', initial: 'N', src: 'Booking.com' },
         { quote: 'Jako blizu centra grada, sa parking mestom u dvorištu. Komunikacija sa objektom odlična.', name: 'Robert', initial: 'R', src: 'Booking.com' },
       ],
-      attractions: [
-        { name: 'Niška Tvrđava', dist: '10 min šetnje', ph: 'niška tvrđava', desc: 'Simbol grada i najlepše mesto za šetnju uz reku Nišavu.' },
-        { name: 'Kazandžijsko sokače', dist: '8 min šetnje', ph: 'stari grad', desc: 'Srce noćnog života, kafići, restorani i domaća kuhinja.' },
-        { name: 'Ćele-kula', dist: '10 min vožnje', ph: 'ćele-kula', desc: 'Jedinstven istorijski spomenik i priča o prošlosti Niša.' },
-      ],
       contactBlocks: [
         { label: 'Adresa', value: 'Sedmi Juli 7\n18000 Niš, Srbija' },
         { label: 'Telefon', value: '+381 63 783 6968' },
         { label: 'Radno vreme', value: 'Recepcija svaki dan 00–24h' },
       ],
-      gallery: [],
     };
 
     const en = {
@@ -468,8 +447,7 @@ class Component extends DCLogic {
       bkScore: '8.6',
       bkLabel: 'Booking.com rating',
       bkSub: 'Superb, based on guest reviews',
-      attKicker: 'Niš guide',
-      attTitle: 'Discover the city',
+      ariaMenu: 'Menu',
       locKicker: 'Contact & location',
       locTitle: 'We are 100m from the center of Niš',
       footTag: 'Enjoy comfortable accommodation in the city center, ideal for business trips and holidays. Your comfort is our priority.',
@@ -499,45 +477,14 @@ class Component extends DCLogic {
         { quote: 'Everything was perfect!! The staff were kind!! The accommodation was really comfortable!! Recommended to everyone!!', name: 'Nikola', initial: 'N', src: 'Booking.com' },
         { quote: 'Very close to the city center, with a parking spot in the yard. Communication with the host was excellent.', name: 'Robert', initial: 'R', src: 'Booking.com' },
       ],
-      attractions: [
-        { name: 'Niš Fortress', dist: '10 min walk', ph: 'niš fortress', desc: 'The symbol of the city and the loveliest spot for a walk by the Nišava river.' },
-        { name: 'Kazandžijsko sokače', dist: '8 min walk', ph: 'old town', desc: 'The heart of nightlife, cafés, restaurants and local cuisine.' },
-        { name: 'Skull Tower', dist: '10 min drive', ph: 'skull tower', desc: 'A unique historical monument telling the story of the citys past.' },
-      ],
       contactBlocks: [
         { label: 'Address', value: 'Sedmi Juli 7\n18000 Niš, Serbia' },
         { label: 'Phone', value: '+381 63 783 6968' },
         { label: 'Opening hours', value: 'Reception every day 00–24h' },
       ],
-      gallery: [],
     };
 
     return this.state.lang === 'en' ? en : sr;
-  }
-
-  galleryTiles() {
-    const spans = [
-      'grid-column: span 2; grid-row: span 2;',
-      'grid-column: span 1; grid-row: span 1;',
-      'grid-column: span 1; grid-row: span 1;',
-      'grid-column: span 1; grid-row: span 2;',
-      'grid-column: span 1; grid-row: span 1;',
-      'grid-column: span 2; grid-row: span 1;',
-      'grid-column: span 1; grid-row: span 1;',
-    ];
-    const imgs = [
-      'images/apartmaniza2osobe-6-2048x1296.jpg',
-      'images/644290006.jpg',
-      'images/644290410.jpg',
-      'images/644290413.jpg',
-      'images/332489486.jpg',
-      'images/644290418.jpg',
-      'images/332186676.jpg',
-    ];
-    return spans.map((s, i) => ({
-      style: s,
-      imgEl: React.createElement('img', { src: imgs[i], alt: 'Apartman', style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
-    }));
   }
 
   amenityIcon(i) {
@@ -612,32 +559,17 @@ class Component extends DCLogic {
       alt: 'The Only One Apartments · ulaz',
       style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '72% 45%', display: 'block' },
     });
-    const gi = this.state.galIdx;
-    const galleryCurrentEl = React.createElement('img', {
-      key: gi,
-      src: this.galImgs[gi],
-      alt: 'Apartman',
-      style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block', animation: 'gFade .9s ease' },
-    });
-    const galleryDots = this.galImgs.map((_, i) => ({
-      go: () => this.setState({ galIdx: i }),
-      style: 'width: 9px; height: 9px; border-radius: 999px; cursor: pointer; transition: all .3s ease; background: ' + (i === gi ? '#d8b877' : 'rgba(236,229,214,.4)') + '; ' + (i === gi ? 'width: 26px;' : ''),
-    }));
     return {
       t,
       nav: t.nav,
       heroStats: t.heroStats,
       apartments,
       heroImgEl,
-      galleryCurrentEl,
-      galleryDots,
       heroImg: 'images/apartmaniza2osobe-6-2048x1296.jpg',
       introImg: 'images/332186676.jpg',
       amenities: t.amenities.map((am, i) => ({ ...am, icon: this.amenityIcon(i) })),
       reviews: t.reviews,
-      attractions: t.attractions,
       contactBlocks: t.contactBlocks,
-      gallery: this.galleryTiles(),
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
       closeMenu: () => this.setState({ menuOpen: false }),
