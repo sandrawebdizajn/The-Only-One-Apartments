@@ -116,8 +116,19 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: &quot;100%&quot;, &quot;height&quot;: &quot;100%&quot;}}">
+function readStoredLang() {
+  try {
+    return window.localStorage.getItem('toa-lang') === 'en' ? 'en' : 'sr';
+  } catch {
+    return 'sr';
+  }
+}
+function storeLang(lang) {
+  try { window.localStorage.setItem('toa-lang', lang); } catch {}
+}
+
 class Component extends DCLogic {
-  state = { lang: 'sr', lightbox: null, menuOpen: false };
+  state = { lang: readStoredLang(), lightbox: null, menuOpen: false };
 
   componentDidMount() { this.revealInit(); }
   componentWillUnmount() { if (this._revealIO) this._revealIO.disconnect(); }
@@ -272,8 +283,8 @@ class Component extends DCLogic {
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
       closeMenu: () => this.setState({ menuOpen: false }),
-      setSr: () => this.setState({ lang: 'sr' }),
-      setEn: () => this.setState({ lang: 'en' }),
+      setSr: () => { storeLang('sr'); this.setState({ lang: 'sr' }); },
+      setEn: () => { storeLang('en'); this.setState({ lang: 'en' }); },
       srBtnStyle: this.state.lang === 'sr' ? active : inactive,
       enBtnStyle: this.state.lang === 'en' ? active : inactive,
     };
